@@ -1,0 +1,20 @@
+# Compiled object files
+*.o
+
+# Executable binaries
+cryptotools
+*.out
+*.exe
+
+# Dependency or temporary files
+*.log
+*.tmp
+
+# Editor-specific files
+.vscode/
+.idea/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+

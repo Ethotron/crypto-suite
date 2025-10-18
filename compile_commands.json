@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Wall",
+      "-Wextra",
+      "-std=c11",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "obj/cli.o",
+      "src/cli.c"
+    ],
+    "directory": "/home/ethotron/Documents/Projects/CryptographyV2/CryptoSuite",
+    "file": "/home/ethotron/Documents/Projects/CryptographyV2/CryptoSuite/src/cli.c",
+    "output": "/home/ethotron/Documents/Projects/CryptographyV2/CryptoSuite/obj/cli.o"
+  }
+]
