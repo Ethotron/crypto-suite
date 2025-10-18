@@ -6,6 +6,11 @@ cryptotools
 *.out
 *.exe
 
+# clangd index cache
+*.idx
+.clangd/
+.cache/
+
 # Dependency or temporary files
 *.log
 *.tmp

@@ -10,7 +10,7 @@ typedef enum {
 typedef enum {
   MODE_ENCRYPT,
   MODE_DECRYPT,
-  MODE_BRUTE_FORCE,
+  MODE_CRYPTANALYZE,
 } CipherMode;
 
 typedef struct {

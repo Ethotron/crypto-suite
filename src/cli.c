@@ -1,6 +1,5 @@
 #include "cli.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <strings.h>
 #include <getopt.h>
@@ -32,7 +31,7 @@ static bool mode_from_string(const char *str, CipherMode *cipher_mode) {
     return true;
   }
   if (strcasecmp(str, "bruteforce") == 0) {
-    *cipher_mode = MODE_BRUTE_FORCE;
+    *cipher_mode = MODE_CRYPTANALYZE;
     return true;
   }
   
@@ -41,9 +40,9 @@ static bool mode_from_string(const char *str, CipherMode *cipher_mode) {
 
 void print_usage(void) {
     printf("Usage:\n");
-    printf("  crypto-suite --cipher <name> --mode <encrypt|decrypt|bruteforce> [options]\n\n");
+    printf("  crypto-suite --cipher <name> --mode <encrypt|decrypt|cryptanalyze> [options]\n\n");
     printf("Options:\n");
-    printf("  --key <key>            Key for encryption/decryption (not used for bruteforce)\n");
+    printf("  --key <key>            Key for encryption/decryption (not used for cryptanalyze)\n");
     printf("  -h, --help             Show this help message\n");
     printf("\nExamples:\n");
     printf("  crypto-suite --cipher caesar --mode encrypt --key 3\n");
@@ -96,8 +95,8 @@ int parse_args(int argc, char **argv, CliArgs *cli_args) {
     return 1;
   }
 
-  if (cli_args->mode == MODE_BRUTE_FORCE && cli_args->has_key) {
-    fprintf(stderr, "Warning: --key ignored for bruteforce mode.\n");
+  if (cli_args->mode == MODE_CRYPTANALYZE && cli_args->has_key) {
+    fprintf(stderr, "Warning: --key ignored for cryptanalyze mode.\n");
   }
 
   return 0;
