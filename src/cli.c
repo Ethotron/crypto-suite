@@ -9,8 +9,8 @@ static bool cipher_from_string(const char *str, CipherAlgorithm *cipher_algorith
     return false;
   }
 
-  if (strcasecmp(str, "caeser") == 0) {
-    *cipher_algorithm = CIPHER_CAESER;
+  if (strcasecmp(str, "caesar") == 0) {
+    *cipher_algorithm = CIPHER_CAESAR;
     return true;
   }
 

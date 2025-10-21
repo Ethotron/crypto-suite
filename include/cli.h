@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 typedef enum {
-  CIPHER_CAESER
+  CIPHER_CAESAR
 } CipherAlgorithm;
 
 typedef enum {
