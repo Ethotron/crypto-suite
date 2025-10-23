@@ -1,12 +1,24 @@
 #include "cipher.h"
-#include "cli.h"
-#include <stdlib.h>
+#include "caesar.h"
+#include "substitution.h"
+#include <string.h>
 
-extern const CipherStrategy *get_caeser_strategy(void);
+static const Cipher *ciphers[] = {
+  &CAESAR_CIPHER,
+  &SUBSTITUTION_CIPHER,
+  NULL
+};
 
-const CipherStrategy *get_cipher_strategy(CipherAlgorithm algorithm) {
-  switch (algorithm) {
-    case CIPHER_CAESER : return get_caeser_strategy();
-    default : return NULL;
+const Cipher *get_cipher(const char *name) {
+  if (!name) {
+    return NULL;
   }
+
+  for (int i = 0; ciphers[i] != NULL; i++) {
+    if (strcmp(ciphers[i]->name, name) == 0) {
+      return ciphers[i];
+    }
+  }
+  return NULL;
 }
+

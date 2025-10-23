@@ -1,13 +1,12 @@
 #ifndef CIPHER_H
 #define CIPHER_H
 
-#include "cli.h"
 typedef struct {
-  void (*encrypt)(const char *input_text, const char *key);
-  void (*decrypt)(const char *input_text, const char *key);
-  char* (*cryptanalyze)(const char *input_text);
-} CipherStrategy;
+  const char *name;
+  char *(*encrypt)(const char *plain_text, const char *key);
+  char *(*decrypt)(const char *cipher_text, const char *key);
+} Cipher;
 
-const CipherStrategy *get_cipher_strategy(CipherAlgorithm algorithm);
+const Cipher *get_cipher(const char *name);
 
 #endif

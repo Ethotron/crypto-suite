@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "cli.h"
 #include "cipher.h"
+#include "cli.h"
 
 int main(int argc, char *argv[]) {
   CliArgs cli_args;
@@ -13,27 +13,28 @@ int main(int argc, char *argv[]) {
   char buffer[4096];
   size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, stdin);
   buffer[bytes_read] = '\0';
-  const CipherStrategy *strategy = get_cipher_strategy(cli_args.cipher);
+  const Cipher *cipher = get_cipher(cli_args.cipher_name);
 
-  if (!strategy) {
+  if (!cipher) {
     fprintf(stderr, "Error: Strategy not defined for cipher.\n");
     return EXIT_FAILURE;
   }
 
+  char *output;
   switch (cli_args.mode) {
     case MODE_ENCRYPT:
-      strategy->encrypt(buffer, cli_args.key);
+      output = cipher->encrypt(buffer, cli_args.key);
       break;
     case MODE_DECRYPT:
-      strategy->decrypt(buffer, cli_args.key);
-      break;
-    case MODE_CRYPTANALYZE:
-      strategy->cryptanalyze(buffer);
+      output = cipher->decrypt(buffer, cli_args.key);
       break;
     default:
       fprintf(stderr, "Error: Unsupported operation.\n");
       return EXIT_FAILURE;
   }
+
+  printf("%s\n", output);
+  free(output);
   
   return EXIT_SUCCESS;
 }

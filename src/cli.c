@@ -4,19 +4,6 @@
 #include <strings.h>
 #include <getopt.h>
 
-static bool cipher_from_string(const char *str, CipherAlgorithm *cipher_algorithm) {
-  if (str == NULL){
-    return false;
-  }
-
-  if (strcasecmp(str, "caesar") == 0) {
-    *cipher_algorithm = CIPHER_CAESAR;
-    return true;
-  }
-
-  return false;
-}
-
 static bool mode_from_string(const char *str, CipherMode *cipher_mode) {
   if (str == NULL) {
     return false;
@@ -26,23 +13,20 @@ static bool mode_from_string(const char *str, CipherMode *cipher_mode) {
     *cipher_mode = MODE_ENCRYPT;
     return true;
   }
-  if (strcasecmp(str, "decrypt") == 0) {
+  else if (strcasecmp(str, "decrypt") == 0) {
     *cipher_mode = MODE_DECRYPT;
     return true;
   }
-  if (strcasecmp(str, "bruteforce") == 0) {
-    *cipher_mode = MODE_CRYPTANALYZE;
-    return true;
+  else {
+    return false;
   }
-  
-  return false;
 }
 
 void print_usage(void) {
     printf("Usage:\n");
-    printf("  crypto-suite --cipher <name> --mode <encrypt|decrypt|cryptanalyze> [options]\n\n");
+    printf("  crypto-suite --cipher <name> --mode <encrypt/decrypt> [options]\n\n");
     printf("Options:\n");
-    printf("  --key <key>            Key for encryption/decryption (not used for cryptanalyze)\n");
+    printf("  --key <key>            Key for encryption/decryption\n");
     printf("  -h, --help             Show this help message\n");
     printf("\nExamples:\n");
     printf("  crypto-suite --cipher caesar --mode encrypt --key 3\n");
@@ -63,11 +47,7 @@ int parse_args(int argc, char **argv, CliArgs *cli_args) {
   while ((opt = getopt_long(argc, argv, "c:m:k:h", long_opts, &opt_index)) != -1) {
     switch (opt) {
       case 'c':
-        if (!cipher_from_string(optarg, &cli_args->cipher)) {
-          fprintf(stderr, "Error: %s is not a valid cipher algorithm.\n", optarg);
-          print_usage();
-          return 1;
-        };
+        cli_args->cipher_name = optarg;
         break;
       case 'm':
         if (!mode_from_string(optarg, &cli_args->mode)) {
@@ -77,27 +57,15 @@ int parse_args(int argc, char **argv, CliArgs *cli_args) {
         }
         break;
       case 'k':
-        strncpy(cli_args->key, optarg, sizeof(cli_args->key) - 1);
-        cli_args->has_key = true;
+        cli_args->key = optarg;
         break;
       case 'h':
         print_usage();
-        return 0;
+        return 1;
       default:
         print_usage();
         return 1;
     }
   }
-
-  if ((cli_args->mode == MODE_ENCRYPT || cli_args->mode == MODE_DECRYPT) && !cli_args->has_key) {
-    fprintf(stderr, "Error: --key is required for encrypt/decrypt modes.\n");
-    print_usage();
-    return 1;
-  }
-
-  if (cli_args->mode == MODE_CRYPTANALYZE && cli_args->has_key) {
-    fprintf(stderr, "Warning: --key ignored for cryptanalyze mode.\n");
-  }
-
   return 0;
 }
