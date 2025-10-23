@@ -19,6 +19,8 @@ cryptotools
 .vscode/
 .idea/
 
+compile_comands.json
+
 # OS metadata
 .DS_Store
 Thumbs.db

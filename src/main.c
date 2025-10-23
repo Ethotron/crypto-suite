@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
       return EXIT_FAILURE;
   }
 
+  if (output == NULL) {
+    return EXIT_FAILURE;
+  }
+
   printf("%s\n", output);
   free(output);
   
