@@ -34,8 +34,8 @@ static bool parse_key(const char *key, char *parsed_key) {
 }
 
 static char* encrypt_impl(const char *plain_text, const char *key) {
-  char encryption_key[ALPHABET_SIZE];
-  if (!parse_key(key, encryption_key)) {
+  char parsed_key[ALPHABET_SIZE];
+  if (!parse_key(key, parsed_key)) {
     return NULL;
   }
 
@@ -51,7 +51,7 @@ static char* encrypt_impl(const char *plain_text, const char *key) {
     if (isalpha(ch)){
       ch = toupper(ch);
       int index = ch - 'A';
-      char encrypted_ch = key[index];
+      char encrypted_ch = parsed_key[index];
       *end++ = encrypted_ch;
     }
   }
@@ -60,19 +60,20 @@ static char* encrypt_impl(const char *plain_text, const char *key) {
   return cipher_text;
 }
 
-static void create_decryption_key(const char *key, char *decryption_key) {
+static void create_decryption_mapping(const char *key, char *decryption_mapping) {
   for (int i = 0; i < ALPHABET_SIZE; i++) {
-    decryption_key[key[i] - 'A'] = 'A' + i;
+    decryption_mapping[key[i] - 'A'] = 'A' + i;
   }
 }
 
 static char* decrypt_impl(const char *cipher_text, const char *key) {
-  char decryption_key[ALPHABET_SIZE]; 
-  if (!parse_key(key, decryption_key)) {
+  char parsed_key[ALPHABET_SIZE]; 
+  if (!parse_key(key, parsed_key)) {
     return NULL;
   }
 
-  create_decryption_key(key, decryption_key);
+  char decryption_mapping[ALPHABET_SIZE];
+  create_decryption_mapping(parsed_key, decryption_mapping);
 
   int input_len = strlen(cipher_text);
   char *plain_text = malloc(input_len + 1);
@@ -86,7 +87,7 @@ static char* decrypt_impl(const char *cipher_text, const char *key) {
     if (isalpha(ch)) {
       ch = toupper(ch);
       int index = ch - 'A';
-      char decrypted_ch = decryption_key[index];
+      char decrypted_ch = decryption_mapping[index];
       *end++ = decrypted_ch;
     }
   }
