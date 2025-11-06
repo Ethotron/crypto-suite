@@ -1,11 +1,13 @@
 #include "cipher.h"
 #include "caesar.h"
 #include "substitution.h"
+#include "vigenere.h"
 #include <string.h>
 
 static const Cipher *ciphers[] = {
   &CAESAR_CIPHER,
   &SUBSTITUTION_CIPHER,
+  &VIGENERE_CIPHER,
   NULL
 };
 
